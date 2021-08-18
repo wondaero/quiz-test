@@ -13,10 +13,10 @@
       <img src="../assets/img/solomon.svg" class="v-top" height="45" />
       <strong class="inline-block h100p line-h45px v-top">솔로몬의 하루</strong>
 
-      <div class="absolute top0 right10 h100p txt-c pd-t10 border-box">
+      <!-- <div class="absolute top0 right10 h100p txt-c pd-t10 border-box">
         <img src="../assets/img/logout.svg" height="25" v-if="store.state.userInfo" v-cloak @click="logout();">
         <img src="../assets/img/login.svg" height="25" v-else v-cloak>
-      </div>
+      </div> -->
     </header>
     <footer class="fixed bottom0 left50p translate-x-50p w80p h50 bg-fff border-box z-idx2 flex flex-row radius50 mx-w400"
     style="box-shadow1:0 0 5px #bbb; background:#e7c13c;">
@@ -134,7 +134,6 @@ export default {
       const telWithoutHyphen = tel.replaceAll("-", "")
       // let telWithoutHyphen = String(tel).replace(/-/gi, '');
       axios.post(`${node.nodeUrl}/login`, {tel: telWithoutHyphen}).then((res) => {
-      // axios.get(`${node.nodeUrl}/test`, {tel: telWithoutHyphen}).then((res) => {
         console.log(res.data);
         if(res.data.length){
           store.state.userSeq = res.data[0].seq_m;
