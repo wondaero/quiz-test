@@ -17,6 +17,9 @@
         <img src="../assets/img/logout.svg" height="25" v-if="store.state.userInfo" v-cloak @click="logout();">
         <img src="../assets/img/login.svg" height="25" v-else v-cloak>
       </div> -->
+      <div class="absolute top0 right10 h100p txt-c pd-t10 border-box">
+        <input type="number" class="w50 op0">
+      </div>
     </header>
     <footer class="fixed bottom0 left50p translate-x-50p w80p h50 bg-fff border-box z-idx2 flex flex-row radius50 mx-w400"
     style="box-shadow1:0 0 5px #bbb; background:#e7c13c;">
@@ -80,8 +83,8 @@
 import { reactive, ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import Swiper from "swiper";
-import axios from 'axios';
-import node from '../config/backEnd.js';
+// import axios from 'axios';
+// import node from '../config/backEnd.js';
 
 import MainHome from "./MainHome";
 import MainUserInfo from "./MainUserInfo";
@@ -130,19 +133,19 @@ export default {
       state.swiperIdx = pageIdx;
     };
 
-    const login = (tel) => {
-      const telWithoutHyphen = tel.replaceAll("-", "")
-      // let telWithoutHyphen = String(tel).replace(/-/gi, '');
-      axios.post(`${node.nodeUrl}/login`, {tel: telWithoutHyphen}).then((res) => {
-        console.log(res.data);
-        if(res.data.length){
-          store.state.userSeq = res.data[0].seq_m;
-          store.commit('getUserInfo', store.state.userSeq);
-        }else{
-          store.commit('popupControl', {isOpen: true, name: 'login'});
-        }
-      });
-    }
+    // const login = (tel, isCookie) => {
+    //   let telWithoutHyphen = tel.replaceAll("-", "");
+    //   if(isCookie) telWithoutHyphen = store.state.cookie.get('tel');
+    //   // let telWithoutHyphen = String(tel).replace(/-/gi, '');
+    //   axios.post(`${node.nodeUrl}/login`, {tel: telWithoutHyphen}).then((res) => {
+    //     if(res.data.length){
+    //       store.state.userSeq = res.data[0].seq_m;
+    //       store.commit('getUserInfo', store.state.userSeq);
+    //     }else{
+    //       store.commit('popupControl', {isOpen: true, name: 'login'});
+    //     }
+    //   });
+    // }
 
     const logout = () => {
       if(confirm('로그아웃 하시겠습니까?')){
@@ -159,7 +162,7 @@ export default {
     //method
 
     //create
-      login('010-8580-5167');
+      // login('1');
     //create
 
     
@@ -188,13 +191,13 @@ export default {
             // console.log(this.realIndex);
             switch(this.realIndex){
               case 0:
-                store.state.ref.mainRanking.getMemberRankByTotalPoint();
+                store.state.ref.mainRanking.getMemberRankByTotalPoint(10);
                 store.state.ref.mainRanking.getMyRankByTotalPoint();
               break;
               case 1:
                 store.state.ref.mainHome.state.oldQuizListCnt = 5;
-                // store.state.ref.mainHome.getNowQuiz();
-                // store.state.ref.mainHome.getOldQuizList();
+                store.state.ref.mainHome.getNowQuiz();
+                store.state.ref.mainHome.getOldQuizList();
               break;
               case 2:
                  store.commit('getUserInfo', store.state.userSeq);
@@ -223,7 +226,7 @@ export default {
 
       //method
       slideTo,
-      login,
+      // login,
       logout,
       //method
 

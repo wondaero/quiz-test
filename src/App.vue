@@ -1,13 +1,13 @@
 <template>
   <div>
-    <MainPage v-if="false" />
+    <MainPage v-if="false" ref="mainPage"/>
   </div>
 </template>
 <script>
 
 // import HelloWorld from './components/HelloWorld.vue'
 import MainPage from "./components/MainPage.vue";
-// import { useStore } from "vuex";
+import { useStore } from "vuex";
 
 export default {
   name: "App",
@@ -16,10 +16,15 @@ export default {
     MainPage
   },
   // setup() {
+
   //   const store = useStore();
+
+
+
 
   //   return {
   //     store,
+
   //   }
   // }
 };

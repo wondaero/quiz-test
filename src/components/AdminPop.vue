@@ -165,6 +165,8 @@ export default {
       }
 
       axios.post(`${node.nodeUrl}/upload`, data).then((res) => {
+      // axios.post(`${node.nodeUrl}/upload`).then((res) => {
+
 
         let fileData = res.data;
         fileData.answer = answer.value.value;

@@ -5,7 +5,7 @@
           <div class="mg-b10">
             <strong>핸드폰번호</strong>
             <div class="cf border-ccc mg-t5">
-              <input type="number" class="float-l block border0 radius0 pd10 w100p-100 border-box h40" placeholder="01012345678">
+              <input type="number" class="float-l block border0 radius0 pd10 w100p-100 border-box h40" placeholder="01012345678" ref="tel">
               <button class="float-r pd10 border0 outline0 font12 w100 block h40" style="background:#e7c13c;">
                   <strong>인증번호 요청</strong>
               </button>
@@ -33,10 +33,10 @@
           </div>
         </article>
         <div class="txt-c">
-          <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;">
+          <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;" @click="login();">
               <strong>가입</strong>
           </button>
-          <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;">
+          <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;" @click="login(tel.value)">
               <strong>로그인</strong>
           </button>
         </div>
@@ -45,8 +45,10 @@
 </template>
 <script>
 import { onMounted } from "@vue/runtime-core";
-import { reactive } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import { useStore } from "vuex";
+import axios from 'axios';
+import node from '../config/backEnd.js';
 
 export default {
   components: {
@@ -58,6 +60,27 @@ export default {
     })
 
 
+    //ref
+    const tel = ref(null);
+    //ref
+
+    const login = (tel, isCookie) => {
+      let telWithoutHyphen = tel.replaceAll("-", "");
+      if(isCookie) telWithoutHyphen = store.state.cookie.get('tel');
+      axios.post(`${node.nodeUrl}/login`, {tel: telWithoutHyphen}).then((res) => {
+        console.log(res.data);
+        if(res.data.length){
+          store.state.userSeq = res.data[0].seq_m;
+          store.commit('getUserInfo', store.state.userSeq);
+          store.commit('popupControl', {isOpen: false, name: ''});
+        }
+      });
+    }
+
+    // create
+    login('111');
+    // create
+
     onMounted(() => {
       //네이티브로 전화번호 가져오기
       //번호가 없으면 번호를 가져올 수 없다고 수동입력 시키기
@@ -65,11 +88,17 @@ export default {
 
     return {
       //method
+      login,
       //method
 
       //var
       state,
       //var
+
+
+      //ref
+      tel,
+      //ref
 
       store,
     };

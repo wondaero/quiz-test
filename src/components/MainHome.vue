@@ -174,16 +174,6 @@ export default {
       console.log(state.viewOldQuizHint);
     }
 
-    const test = () => {
-      // const privateUrl = '172.31.14.28';
-      // const publicUrl = '3.34.138.157';
-
-      axios.get(`${node.nodeUrl}/apple`).then((res) => {
-        console.log(res.data);
-        // state.todos = res.data;
-      });
-    }
-
     const getNowQuiz = () => {  //현재퀴즈 가져오기
       axios.post(`${node.nodeUrl}/getNowQuiz`).then((res) => {
         if(!res.data.length) return;
@@ -200,7 +190,7 @@ export default {
 
     const getOldQuizList = () => {
       axios.post(`${node.nodeUrl}/getOldQuizList`, {cnt: state.oldQuizListCnt}).then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         state.oldQuizList = res.data;
         state.oldQuizListCnt += 5;
 
@@ -233,7 +223,6 @@ export default {
       submitTheAnswer,
       getOldQuiz,
       getOldQuizHint,
-      test,
       getNowQuiz,
       getOldQuizList,
       showNowHint,
