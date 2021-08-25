@@ -159,10 +159,16 @@ export default {
       }
     }
 
+    const isMobile = () => {
+      store.commit('isMobile');
+    }
+
     //method
 
     //create
       // login('1');
+      isMobile();
+      
     //create
 
     
@@ -226,6 +232,7 @@ export default {
 
       //method
       slideTo,
+      isMobile,
       // login,
       logout,
       //method

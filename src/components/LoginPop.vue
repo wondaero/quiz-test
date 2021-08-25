@@ -5,13 +5,14 @@
           <div class="mg-b10">
             <strong>핸드폰번호</strong>
             <div class="cf border-ccc mg-t5">
-              <input type="number" class="float-l block border0 radius0 pd10 w100p-100 border-box h40" placeholder="01012345678" ref="tel">
+              <input type="number" class="float-l block border0 radius0 pd10 w100p-100 border-box h40" placeholder="01012345678" ref="tel"
+              :class="{'op0': !store.state.isMobile}" @keydown.enter="loginFromPC(tel.value);">
               <button class="float-r pd10 border0 outline0 font12 w100 block h40" style="background:#e7c13c;">
                   <strong>인증번호 요청</strong>
               </button>
             </div>
           </div>
-          <div>
+          <div v-if="store.state.isMobile">
             <strong>인증번호</strong>
             <div class="cf border-ccc mg-t5">
               <input type="text" class="float-l block border0 radius0 pd10 w100p-80 border-box h40">
@@ -21,7 +22,7 @@
             </div>
           </div>
         </article>
-        <article class="pd10 border-ccc mg-b10">
+        <article class="pd10 border-ccc mg-b10" v-if="store.state.isMobile">
           <div>
             <strong>닉네임 <span class="color-red font8">*한번 정한 닉네임은 변경할 수 없습니다.</span></strong>
             <div class="cf border-ccc mg-t5">
@@ -33,7 +34,7 @@
           </div>
         </article>
         <div class="txt-c">
-          <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;" @click="login();">
+          <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;" v-if="store.state.isMobile">
               <strong>가입</strong>
           </button>
           <button class="pd10 border0 outline0 font14 w80" style="background:#e7c13c;" @click="login(tel.value)">
@@ -68,13 +69,18 @@ export default {
       let telWithoutHyphen = tel.replaceAll("-", "");
       if(isCookie) telWithoutHyphen = store.state.cookie.get('tel');
       axios.post(`${node.nodeUrl}/login`, {tel: telWithoutHyphen}).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if(res.data.length){
           store.state.userSeq = res.data[0].seq_m;
           store.commit('getUserInfo', store.state.userSeq);
           store.commit('popupControl', {isOpen: false, name: ''});
         }
       });
+    }
+
+    const loginFromPC = (tel) => {
+      if(store.state.isMobile) return;
+      login(tel);
     }
 
     // create
@@ -89,6 +95,7 @@ export default {
     return {
       //method
       login,
+      loginFromPC,
       //method
 
       //var
